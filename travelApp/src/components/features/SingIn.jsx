@@ -9,7 +9,7 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const { isLoggingIn } = useSelector(state => state.auth);
-    // Step 2: Handle change functions
+    
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
