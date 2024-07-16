@@ -6,6 +6,7 @@ import SignUpPage from './pages/SignUpPage';
 import SignInPage from './pages/SIgnInPage';
 import BookingsPage from './pages/BookingsPage';
 import TripPage from './pages/TripPage';
+import ProtectedRoute from './components/auth/ProtectedRoute.tsx';
 // Import other pages/components here
 
 const App: React.FC = () => {
@@ -16,12 +17,14 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainPage />} /> 
+        
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/bookings" element={<BookingsPage />} />
-        <Route path="/trip/:tripId" element={<TripPage/>} />
-        {/* Define other routes here */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<MainPage />} /> 
+          <Route path="/bookings" element={<BookingsPage />} />
+          <Route path="/trip/:tripId" element={<TripPage/>} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
