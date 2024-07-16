@@ -1,13 +1,13 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT, SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE  } from '../types/actionTypes';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT, SIGNUP_REQUEST,  SIGNUP_FAILURE  } from '../types/actionTypes';
 import { User } from '../types/user';
 import { Dispatch } from 'redux';
 const loginRequest = () => ({
   type: LOGIN_REQUEST,
 });
 
-const loginSuccess = (user:User) => ({
+const loginSuccess = (token: string, user:User) => ({
   type: LOGIN_SUCCESS,
-  payload: user,
+  payload: {token: token, user: user},
 });
 
 const loginFailure = (error:Error) => ({
@@ -23,10 +23,6 @@ const signupRequest = () => ({
   type: SIGNUP_REQUEST,
 });
 
-const signupSuccess = (user:User) => ({
-  type: SIGNUP_SUCCESS,
-  payload: user,
-});
 
 const signupFailure = (error:Error) => ({
   type: SIGNUP_FAILURE,
@@ -72,7 +68,7 @@ const loginUser = (credentials:Credentials) => (dispatch: Dispatch) => {
   })
   .then(data => {
     if (data) {
-      dispatch(loginSuccess({ fullName: data.user.fullName, email: data.user.email, createdAt: data.user.createdAt })); 
+      dispatch(loginSuccess( data.token, data.user )); 
     }
   })
 
@@ -113,7 +109,7 @@ const signupUser =  (credentials:Credentials) => (dispatch: Dispatch) => {
   })
   .then(data => {
     
-    dispatch(loginSuccess({ fullName: data.user.fullName, email: data.user.email, createdAt: data.user.createdAt })); 
+    dispatch(loginSuccess(data.token,{ fullName: data.user.fullName, email: data.user.email, createdAt: data.user.createdAt })); 
   })
   .catch(error => {
     dispatch(signupFailure(error.message));

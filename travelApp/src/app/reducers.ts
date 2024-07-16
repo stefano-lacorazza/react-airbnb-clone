@@ -4,6 +4,7 @@ import { AuthState } from '../types/authTypes';
 
 
 const initialState: AuthState = {
+  token: null,
   isLoggingIn: false,
   isLoggedIn: false,
   currentUser: null,
@@ -31,6 +32,7 @@ export const authReducer = (state: AuthState = initialState, action: Action) => 
         isLoggingIn: false,
         isLoggedIn: true,
         currentUser: action.payload,
+        token: action.payload.token,
       };
       console.log('newstate:',newState); // This will log the new state
       return newState;
