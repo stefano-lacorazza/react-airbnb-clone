@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../common/Button';
 import Input from '../common/Input';;
 import { signupUser } from '../../auth/authAction';
@@ -6,7 +6,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import { RootState } from '../../app/store'; // Import your RootState type
 import { TypedUseSelectorHook, useDispatch as reduxUseDispatch, useSelector as reduxUseSelector } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 
 type DispatchType = ThunkDispatch<RootState, undefined, AnyAction>;
 export const useDispatch = () => reduxUseDispatch<DispatchType>();
@@ -17,7 +17,14 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState(''); 
     const dispatch = useDispatch();
-    
+    const navigate = useNavigate();
+    const { isLoggingIn, isLoggedIn } = useSelector(state => state.auth); // Assuming isLoggedIn indicates login success
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/'); // Redirect on login success
+        }
+    }, [isLoggedIn, navigate]);
     
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -34,8 +41,8 @@ const SignUp = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Directly dispatch the signupUser thunk action
-        dispatch(signupUser({ email, password, fullName: name }));
+       
+        dispatch(signupUser({ email, password, name: name }));
     };
 
 
@@ -50,7 +57,7 @@ const SignUp = () => {
         datatestid='auth-full-name'
         text='Full Name'
         value={name}
-            onChange={handleNameChange}
+        onChange={handleNameChange}
     />
         <Input
         type='email'
