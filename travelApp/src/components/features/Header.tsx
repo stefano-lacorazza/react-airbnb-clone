@@ -1,6 +1,7 @@
 import React from 'react';
 import briefcaseImage from '../../assets/images/briefcase.svg';
 import userImage from '../../assets/images/user.svg';
+import { Link } from 'react-router-dom'; 
 
 type HeaderProps = {
   logged: boolean;
@@ -47,9 +48,9 @@ const Header: React.FC<HeaderProps> = ({logged}) => {
   return (
     <header className='header'>
         <div className='header__inner'>
-        <a data-test-id="header-logo" href="/" className="header__logo">
-          Travel App
-        </a>
+        <Link data-test-id="header-logo" to="/" className="header__logo">
+        Travel App
+        </Link>
         {navButtons}
         </div>
     </header>

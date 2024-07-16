@@ -1,5 +1,5 @@
 import React from 'react';
-import SignUp from '../components/features/SignUp'
+import SignUp from '../components/features/SignUp';
 import Header from '../components/features/Header';
 import Footer from '../components/features/Footer';
 
