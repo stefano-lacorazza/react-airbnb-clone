@@ -61,16 +61,18 @@ const loginUser = (credentials:Credentials) => (dispatch: Dispatch) => {
     
   })
   .then(response => {
-    console.log(response);
+ 
     if (response.ok) {
-      return response.json(); // Parse the response body as JSON
+      const res = response.json();
+      console.log(res);
+      return res; 
     } else {
       return response.status;
     }
   })
   .then(data => {
     if (data) {
-      dispatch(loginSuccess({ id: data.user.id, fullName: data.user.fullName, email: data.user.email, createdAt: data.user.createdAt })); // Adjust according to the actual response structure
+      dispatch(loginSuccess({ fullName: data.user.fullName, email: data.user.email, createdAt: data.user.createdAt })); 
     }
   })
 

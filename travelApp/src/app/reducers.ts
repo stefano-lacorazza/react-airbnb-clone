@@ -3,7 +3,6 @@ import { Action } from '../types/actionTypes';
 import { AuthState } from '../types/authTypes';
 
 
-
 const initialState: AuthState = {
   isLoggingIn: false,
   isLoggedIn: false,
@@ -14,6 +13,9 @@ const initialState: AuthState = {
 
 
 export const authReducer = (state: AuthState = initialState, action: Action) => {
+  console.log('reducer', action);
+
+  
   switch (action.type) {
     case LOGIN_REQUEST:
       return {
@@ -22,13 +24,16 @@ export const authReducer = (state: AuthState = initialState, action: Action) => 
 
       };
     case LOGIN_SUCCESS:
-      return {
+      console.log('reducer login success');
+      console.log(state);
+      const newState = {
         ...state,
         isLoggingIn: false,
         isLoggedIn: true,
-        currentUser: action.payload.user,
-
+        currentUser: action.payload,
       };
+      console.log('newstate:',newState); // This will log the new state
+      return newState;
     case LOGIN_FAILURE:
       return {
         ...state,
@@ -42,6 +47,7 @@ export const authReducer = (state: AuthState = initialState, action: Action) => 
         currentUser: null,
       };
     default:
+      console.log('default',state);
       return state;
   }
 };

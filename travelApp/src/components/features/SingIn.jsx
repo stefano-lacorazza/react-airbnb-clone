@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../auth/authAction';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const { isLoggingIn } = useSelector(state => state.auth);
-    
+    const navigate = useNavigate(); // Create navigate function
+    const { isLoggingIn, isLoggedIn } = useSelector(state => state.auth); // Assuming isLoggedIn indicates login success
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/'); // Redirect on login success
+        }
+    }, [isLoggedIn, navigate]);
+
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
