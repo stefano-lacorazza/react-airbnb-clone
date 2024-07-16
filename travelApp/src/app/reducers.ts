@@ -1,18 +1,8 @@
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from '../types/actionTypes';
 import { Action } from '../types/actionTypes';
+import { AuthState } from '../types/authTypes';
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
 
-interface AuthState {
-  isLoggingIn: boolean;
-  isLoggedIn: boolean;
-  currentUser: User | null;
-  error: string | null;
-}
 
 const initialState: AuthState = {
   isLoggingIn: false,
@@ -36,7 +26,7 @@ export const authReducer = (state: AuthState = initialState, action: Action) => 
         ...state,
         isLoggingIn: false,
         isLoggedIn: true,
-        currentUser: action.payload,
+        currentUser: action.payload.user,
         error: null,
       };
     case LOGIN_FAILURE:
