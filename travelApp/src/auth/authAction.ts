@@ -1,15 +1,16 @@
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT, SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE  } from '../types/actionTypes';
-
+import { User } from '../types/user';
+import { Dispatch } from 'redux';
 const loginRequest = () => ({
   type: LOGIN_REQUEST,
 });
 
-const loginSuccess = (user) => ({
+const loginSuccess = (user:User) => ({
   type: LOGIN_SUCCESS,
   payload: user,
 });
 
-const loginFailure = (error) => ({
+const loginFailure = (error:Error) => ({
   type: LOGIN_FAILURE,
   payload: error,
 });
@@ -22,17 +23,29 @@ const signupRequest = () => ({
   type: SIGNUP_REQUEST,
 });
 
-const signupSuccess = (user) => ({
+const signupSuccess = (user:User) => ({
   type: SIGNUP_SUCCESS,
   payload: user,
 });
 
-const signupFailure = (error) => ({
+const signupFailure = (error:Error) => ({
   type: SIGNUP_FAILURE,
   payload: error,
 });
 
-const loginUser = (credentials) => (dispatch) => {
+type Credentials = {
+  name?: string;
+  email: string;
+  password: string;
+};
+
+export interface SignupAction {
+  type: string;
+  payload: { token: string; user: User; };
+}
+
+
+const loginUser = (credentials:Credentials) => (dispatch: Dispatch) => {
   dispatch(loginRequest());
   console.log(credentials);
   fetch('https://travel-app-api.up.railway.app/api/v1/auth/sign-in', {
@@ -50,15 +63,17 @@ const loginUser = (credentials) => (dispatch) => {
   .then(response => {
     console.log(response);
     if (response.ok) {
-      
-      return response.json();
+      return response.json(); // Parse the response body as JSON
     } else {
-      return response.status
+      return response.status;
     }
   })
   .then(data => {
-    dispatch(loginSuccess({ username: data.user.email })); // Adjust according to the actual response structure
+    if (data) {
+      dispatch(loginSuccess({ id: data.user.id, fullName: data.user.fullName, email: data.user.email, createdAt: data.user.createdAt })); // Adjust according to the actual response structure
+    }
   })
+
   .catch(error => {
     dispatch(loginFailure(error.message));
   });
@@ -67,8 +82,9 @@ const loginUser = (credentials) => (dispatch) => {
 
 };
 
-const signupUser = (userData) => (dispatch) => {
+const signupUser = (userData:User) => (dispatch: Dispatch) => {
   dispatch(signupRequest());
+  console.log(userData);  
   fetch('https://travel-app-api.up.railway.app/api/v1/auth/sign-up', {
     method: 'POST',
     headers: {
@@ -76,13 +92,15 @@ const signupUser = (userData) => (dispatch) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      fullName: userData.name, 
+      fullName: userData.fullName, 
       email: userData.email,
       password: userData.password,
       
     }),
+    
   })
   .then(response => {
+    console.log(response);
     if (response.ok) {
       return response.json();
     } else {
@@ -90,7 +108,7 @@ const signupUser = (userData) => (dispatch) => {
     }
   })
   .then(data => {
-    dispatch(signupSuccess({ username: data.user.email })); // Adjust according to the actual response structure
+    dispatch(signupSuccess({ fullName: data.user.email, id: data.user.id, email: data.user.email})); // Adjust according to the actual response structure
   })
   .catch(error => {
     dispatch(signupFailure(error.message));

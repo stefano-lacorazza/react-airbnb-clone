@@ -4,5 +4,5 @@ export interface AuthState {
   isLoggingIn: boolean;
   isLoggedIn: boolean;
   currentUser: User | null;
-  error: Error | null;
+  error?: Error | null;
 }

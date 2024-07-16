@@ -1,5 +1,5 @@
 import React from 'react';
-import SignIn from '../components/features/SingIn'
+import SignIn from '../components/features/SingIn.jsx'
 import Header from '../components/features/Header';
 import Footer from '../components/features/Footer';
 

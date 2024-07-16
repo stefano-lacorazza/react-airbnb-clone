@@ -41,6 +41,7 @@ const SignIn = () => {
         type='password'
         name='password'
         datatestid='auth-password'
+        text='Password'
         value={password}
         onChange={handlePasswordChange}
     />

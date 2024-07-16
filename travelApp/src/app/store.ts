@@ -1,10 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, Reducer, UnknownAction } from '@reduxjs/toolkit'; // Import the Reducer and UnknownAction types
 import { authReducer } from './reducers';
-
+import { AuthState } from '../types/authTypes';
+import { User } from '../types/user';
 
 const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: authReducer as Reducer<AuthState | { isLoggingIn: boolean; error: { name: string, message: string, Error: Error; }; isLoggedIn: boolean; currentUser: User | null; }, UnknownAction, AuthState | { isLoggingIn: boolean; error: { name: string, message: string, Error: Error; }; isLoggedIn: boolean; currentUser: User | null; }>,
   },
 });
 
