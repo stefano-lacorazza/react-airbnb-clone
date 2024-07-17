@@ -9,12 +9,12 @@ const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const navigate = useNavigate(); // Create navigate function
-    const { isLoggingIn, isLoggedIn } = useSelector(state => state.auth); // Assuming isLoggedIn indicates login success
-
+    const navigate = useNavigate(); 
+    const { isLoggingIn, isLoggedIn } = useSelector(state => state.auth); 
+    
     useEffect(() => {
         if (isLoggedIn) {
-            navigate('/'); // Redirect on login success
+            navigate('/'); 
         }
     }, [isLoggedIn, navigate]);
 

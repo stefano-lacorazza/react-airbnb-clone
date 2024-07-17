@@ -15,6 +15,7 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = ({logged}) => {
   let navButtons: JSX.Element | null = null;
   const name=  useSelector((state: RootState) => state.auth.currentUser?.fullName);
+  console.log('Name:', name);
   const navigate = useNavigate();
   const handleNavigate = () => {
     navigate(`/bookings`);
