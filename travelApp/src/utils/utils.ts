@@ -2,6 +2,7 @@ import { Trip } from '../types/trip';
 import { Booking } from '../types/booking';
 import store from '../app/store';
 import bookingData from '../assets/data/bookings.json';
+import { toast } from 'react-toastify';
 
 const bookings: Booking[] = bookingData;
 
@@ -9,44 +10,53 @@ const returnTripList = async (): Promise<Trip[]> => {
   const state = store.getState();
   const token = state.auth.token;
   console.log('token', token);
-  const response = await fetch('https://travel-app-api.up.railway.app/api/v1/trips', {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
+  try {
+    const response = await fetch('https://travel-app-api.up.railway.app/api/v1/trips', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
+    console.log('response trips', response);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
-  });
-  console.log('response trips', response);
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
+    const trips: Trip[] = await response.json();
+    return trips;
+  } catch (error) {
+    toast.error("Failed to fetch trips. Please try again later.");
+    throw error; // Re-throw the error if you need to handle it later or log it.
   }
-  const trips: Trip[] = await response.json();
-  return trips;
 };
 
 const returnBookingsList = async (): Promise<Booking[]> => {
   const state = store.getState();
   const token = state.auth.token;
   console.log('token', token);
-  const response = await fetch('https://travel-app-api.up.railway.app/api/v1/bookings', {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
+  try {
+    const response = await fetch('https://travel-app-api.up.railway.app/api/v1/bookings', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    });
+    console.log('response bookings', response);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
-  });
-  console.log('response bookings', response);
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
+    const bookings: Booking[] = await response.json();
+    console.log('bookings', bookings);
+    return bookings;
+  } catch (error) {
+    toast.error("Failed to fetch bookings. Please try again later.");
+    throw error; // Re-throw the error if you need to handle it later or log it.
   }
-  const bookings: Booking[] = await response.json();
-  console.log('bookings', bookings);
-  return bookings;
 };
 
 
-const addBooking = async (tripId:string, guests:number, date:string) => {
-
+const addBooking = async (tripId: string, guests: number, date: string) => {
   const bookingDetails = {
     tripId: tripId,
     guests: guests,
@@ -55,7 +65,7 @@ const addBooking = async (tripId:string, guests:number, date:string) => {
   console.log('bookingDetails', bookingDetails);
   const state = store.getState();
   const token = state.auth.token;
-  console.log('token', token);
+
   try {
     const response = await fetch('https://travel-app-api.up.railway.app/api/v1/bookings', {
       method: 'POST',
@@ -72,11 +82,12 @@ const addBooking = async (tripId:string, guests:number, date:string) => {
 
     const data = await response.json();
 
-    console.log('Booking added successfully:', data);
+    toast.success('Booking added successfully!');
   } catch (error) {
-    console.error('Error adding booking:', error);
+
+    toast.error('Failed to add booking. Please try again later.');
   }
-}
+};
 
 const cancelBooking = async (bookingId: string) => {
   const state = store.getState();
@@ -96,8 +107,10 @@ const cancelBooking = async (bookingId: string) => {
     }
 
     console.log('Booking cancelled successfully');
+    toast.success('Booking cancelled successfully!');
   } catch (error) {
     console.error('Error cancelling booking:', error);
+    toast.error('Failed to cancel booking. Please try again later.');
   }
 }
 
