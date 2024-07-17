@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addBooking, returnTripList } from '../../utils/utils';
-
+import { useTrips } from '../../utils/tripContext';
 
 
 type ModalProps = {
@@ -19,10 +19,18 @@ export const Modal: React.FC<ModalProps> = ({id, title, duration, level, price, 
   
     const [date, setDate] = useState('');
     const [guests, setGuests] = useState(1);
-
+    const [bookingSubmitted, setBookingSubmitted] = useState(false);
     const navigate = useNavigate();
+    const { fetchBookings } = useTrips();
 
-
+    useEffect(() => {
+        if (bookingSubmitted) {
+            fetchBookings();
+            navigate('/bookings');
+            // Reset the submission state if needed
+            setBookingSubmitted(false);
+        }
+    }, [bookingSubmitted, fetchBookings, navigate]);
     
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
@@ -35,7 +43,7 @@ export const Modal: React.FC<ModalProps> = ({id, title, duration, level, price, 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
-
+    
         // Validation
         if (!title || !guests || !date) {
             alert("Please fill in all fields.");
@@ -62,7 +70,8 @@ export const Modal: React.FC<ModalProps> = ({id, title, duration, level, price, 
 
 
     addBooking(id, guests, date, );
-    navigate('/bookings');
+
+    setBookingSubmitted(true);
 
   };
 
