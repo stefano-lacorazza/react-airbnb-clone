@@ -4,6 +4,7 @@ import userImage from '../../assets/images/user.svg';
 import { Link } from 'react-router-dom'; 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import { useNavigate } from 'react-router-dom';
 
 type HeaderProps = {
   logged: boolean;
@@ -14,12 +15,17 @@ type HeaderProps = {
 const Header: React.FC<HeaderProps> = ({logged}) => {
   let navButtons: JSX.Element | null = null;
   const name=  useSelector((state: RootState) => state.auth.currentUser?.fullName);
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate(`/bookings`);
+  };
+
   if (logged){
     navButtons = <>
       <nav data-test-id='header-nav' className='header__nav'>
         <ul className='nav-header__list'>
           <li className='nav-header__item' title='Bookings'>
-            <a data-test-id='header-bookings-link' href='/bookings' className='nav-header__inner'>
+            <a data-test-id='header-bookings-link' onClick={handleNavigate} className='nav-header__inner'>
               <span className='visually-hidden'>Bookings</span>
               <img src={briefcaseImage} alt='bookings'></img>
             </a>
