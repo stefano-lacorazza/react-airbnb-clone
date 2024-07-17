@@ -40,7 +40,7 @@ const handleClick = () => {
         <h3 data-test-id='booking-title' className='booking__title'>{title}</h3>
         <span data-test-id='booking-guests' className='booking__guests'>{guests} guests</span>
         <span data-test-id='booking-date' className='booking__date'>{date}</span>
-        <span data-test-id='booking-total' className='booking-total'>${price}</span>
+        <span data-test-id='booking-total' className='booking-total'>${price*guests}</span>
         <button data-test-id='booking-cancel' className='booking__cancel' title='Cancel booking' onClick={handleClick}>
             <span className='visually-hidden'>Cancel booking</span>
             x
