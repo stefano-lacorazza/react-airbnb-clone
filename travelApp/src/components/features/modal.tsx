@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Booking } from '../../types/booking';
+import { useNavigate } from 'react-router-dom';
 import { addBooking, returnTripList } from '../../utils/utils';
 
 
 
 type ModalProps = {
+    id: string;
     title: string;
     duration: number;
     level: string;
@@ -14,10 +15,13 @@ type ModalProps = {
 
 };
 
-export const Modal: React.FC<ModalProps> = ({title, duration, level, price, OnClose}) => {
+export const Modal: React.FC<ModalProps> = ({id, title, duration, level, price, OnClose}) => {
   
     const [date, setDate] = useState('');
     const [guests, setGuests] = useState(1);
+
+    const navigate = useNavigate();
+
 
     
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,22 +58,11 @@ export const Modal: React.FC<ModalProps> = ({title, duration, level, price, OnCl
             alert("Please enter a date that is after today.");
             return;
         }
-        const tripId = returnTripList().find((trip) => trip.title === title)?.id || '';
-        if (!tripId) {
-            alert("Please select a valid trip.");
-            return;
-        }
-    const newBooking: Booking = {
-        id: Math.random().toString(36),
-        userId: Math.random().toString(36),
-        tripId: returnTripList().find((trip) => trip.title === title)?.id || '',
-        guests,
-        date,
-    };
 
 
-    addBooking(newBooking);
-    window.location.href = '/bookings';
+
+    addBooking(id, guests, date, );
+    navigate('/bookings');
 
   };
 

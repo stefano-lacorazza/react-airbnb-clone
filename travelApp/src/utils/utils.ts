@@ -1,9 +1,7 @@
 import { Trip } from '../types/trip';
 import { Booking } from '../types/booking';
-import { useSelector } from 'react-redux'; // Import the useSelector function
 import store from '../app/store';
 import bookingData from '../assets/data/bookings.json';
-import { RootState } from '../app/store';
 
 const bookings: Booking[] = bookingData;
 
@@ -18,7 +16,7 @@ const returnTripList = async (): Promise<Trip[]> => {
       'Authorization': 'Bearer ' + token
     }
   });
-  console.log('response', response);
+  console.log('response trips', response);
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
@@ -26,14 +24,58 @@ const returnTripList = async (): Promise<Trip[]> => {
   return trips;
 };
 
-const returnBookingsList = (): Booking[]=> {
-
-    return bookings;
-  };
-
-const addBooking = (booking: Booking) => {
-    bookings.push(booking);
+const returnBookingsList = async (): Promise<Booking[]> => {
+  const state = store.getState();
+  const token = state.auth.token;
+  console.log('token', token);
+  const response = await fetch('https://travel-app-api.up.railway.app/api/v1/bookings', {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    }
+  });
+  console.log('response bookings', response);
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
   }
+  const bookings: Booking[] = await response.json();
+  console.log('bookings', bookings);
+  return bookings;
+};
+
+const addBooking = async (tripId:string, guests:number, date:string) => {
+
+  const bookingDetails = {
+    tripId: tripId,
+    guests: guests,
+    date: date
+  };
+  console.log('bookingDetails', bookingDetails);
+  const state = store.getState();
+  const token = state.auth.token;
+  console.log('token', token);
+  try {
+    const response = await fetch('https://travel-app-api.up.railway.app/api/v1/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(bookingDetails),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    console.log('Booking added successfully:', data);
+  } catch (error) {
+    console.error('Error adding booking:', error);
+  }
+}
 
 
 

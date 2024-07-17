@@ -3,6 +3,7 @@ import Button from '../common/Button';
 import {Modal} from './modal'
 
 type TripDisplayProps = {
+    id: string;
     image: string;
     title: string;
     duration: number;
@@ -12,7 +13,7 @@ type TripDisplayProps = {
 
 };
 
-const TripDisplay: React.FC<TripDisplayProps> = ({image, title, duration, level,description,price }) => {
+const TripDisplay: React.FC<TripDisplayProps> = ({id, image, title, duration, level,description,price }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
@@ -46,7 +47,7 @@ const TripDisplay: React.FC<TripDisplayProps> = ({image, title, duration, level,
             Book a trip
           '></Button>
         </div>
-        {isModalOpen && <Modal title={title} duration={duration} level={level} price ={price} OnClose={toggleModal}/>}
+        {isModalOpen && <Modal id= {id} title={title} duration={duration} level={level} price ={price} OnClose={toggleModal}/>}
    </div>
 
 
