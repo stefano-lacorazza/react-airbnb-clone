@@ -5,7 +5,7 @@ import { User } from '../types/user';
 
 const store = configureStore({
   reducer: {
-    auth: authReducer as Reducer<AuthState | { isLoggingIn: boolean; error: { name: string, message: string, Error: Error; }; isLoggedIn: boolean; currentUser: User | null; }, UnknownAction, AuthState | { isLoggingIn: boolean; error: { name: string, message: string, Error: Error; }; isLoggedIn: boolean; currentUser: User | null; }>,
+    auth: authReducer as Reducer<AuthState | { token:string; isLoggingIn: boolean; error: { name: string, message: string, Error: Error; }; isLoggedIn: boolean; currentUser: User | null; }, UnknownAction, AuthState | { token:string; isLoggingIn: boolean; error: { name: string, message: string, Error: Error; }; isLoggedIn: boolean; currentUser: User | null; }>,
   },
 });
 

@@ -5,13 +5,17 @@ import TripDisplay from '../components/features/TripDisplay';
 import { Trip } from '../types/trip';
 import { returnTripList } from '../utils/utils';
 import { useParams } from 'react-router-dom';
+import { useTrips } from '../utils/tripContext';
 // Import other components and assets here
 
 
 
 const TripPage: React.FC = () => {
   const { tripId } = useParams();
-  const trip:  Trip | undefined = returnTripList().find((trip) => trip.id === tripId);
+  const { trips } = useTrips();
+  
+
+  const trip:  Trip | undefined = trips.find((trip) => trip.id === tripId);
   if (!trip) {
 
     return (

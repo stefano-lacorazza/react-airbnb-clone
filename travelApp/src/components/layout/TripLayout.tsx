@@ -11,7 +11,7 @@ export const TripLayout: React.FC<TripLayoutProps> = ({ trips }) => {
     <>
       {trips.map((trip) => (
         <Trip
-            key={trip.id}
+            key={'id_'+trip.id}
             title={trip.title}
             level={trip.level}
             duration={trip.duration}

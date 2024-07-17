@@ -4,6 +4,7 @@ import { AuthState } from '../types/authTypes';
 
 
 const initialState: AuthState = {
+  token: null,
   isLoggingIn: false,
   isLoggedIn: false,
   currentUser: null,
@@ -13,7 +14,7 @@ const initialState: AuthState = {
 
 
 export const authReducer = (state: AuthState = initialState, action: Action) => {
-  console.log('reducer', action);
+  
 
   
   switch (action.type) {
@@ -24,15 +25,15 @@ export const authReducer = (state: AuthState = initialState, action: Action) => 
 
       };
     case LOGIN_SUCCESS:
-      console.log('reducer login success');
-      console.log(state);
+
       const newState = {
         ...state,
         isLoggingIn: false,
         isLoggedIn: true,
         currentUser: action.payload,
+        token: action.payload.token,
       };
-      console.log('newstate:',newState); // This will log the new state
+
       return newState;
     case LOGIN_FAILURE:
       return {
@@ -47,7 +48,7 @@ export const authReducer = (state: AuthState = initialState, action: Action) => 
         currentUser: null,
       };
     default:
-      console.log('default',state);
+
       return state;
   }
 };
