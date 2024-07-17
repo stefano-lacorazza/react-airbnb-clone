@@ -3,7 +3,6 @@ import Header from '../components/features/Header';
 import Footer from '../components/features/Footer';
 import TripDisplay from '../components/features/TripDisplay';
 import { Trip } from '../types/trip';
-import { returnTripList } from '../utils/utils';
 import { useParams } from 'react-router-dom';
 import { useTrips } from '../utils/tripContext';
 // Import other components and assets here
@@ -48,7 +47,7 @@ const TripPage: React.FC = () => {
       <main className='trip-page'>
       <h1 className='visually-hidden'>Travel App</h1>
 
-      <TripDisplay image={trip.image} title={trip.title} price={trip.price} duration={trip.duration} level={trip.level} description={trip.description}></TripDisplay>
+      <TripDisplay id= {trip.id} image={trip.image} title={trip.title} price={trip.price} duration={trip.duration} level={trip.level} description={trip.description}></TripDisplay>
 
       </main>
       

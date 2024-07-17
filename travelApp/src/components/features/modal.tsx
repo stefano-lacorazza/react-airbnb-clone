@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Booking } from '../../types/booking';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { addBooking, returnTripList } from '../../utils/utils';
-
+import { useTrips } from '../../utils/tripContext';
 
 
 type ModalProps = {
+    id: string;
     title: string;
     duration: number;
     level: string;
@@ -14,11 +15,22 @@ type ModalProps = {
 
 };
 
-export const Modal: React.FC<ModalProps> = ({title, duration, level, price, OnClose}) => {
+export const Modal: React.FC<ModalProps> = ({id, title, duration, level, price, OnClose}) => {
   
     const [date, setDate] = useState('');
     const [guests, setGuests] = useState(1);
+    const [bookingSubmitted, setBookingSubmitted] = useState(false);
+    const navigate = useNavigate();
+    const { fetchBookings } = useTrips();
 
+    useEffect(() => {
+        if (bookingSubmitted) {
+            fetchBookings();
+            navigate('/bookings');
+            // Reset the submission state if needed
+            setBookingSubmitted(false);
+        }
+    }, [bookingSubmitted, fetchBookings, navigate]);
     
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
@@ -31,7 +43,7 @@ export const Modal: React.FC<ModalProps> = ({title, duration, level, price, OnCl
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
-
+    
         // Validation
         if (!title || !guests || !date) {
             alert("Please fill in all fields.");
@@ -54,22 +66,12 @@ export const Modal: React.FC<ModalProps> = ({title, duration, level, price, OnCl
             alert("Please enter a date that is after today.");
             return;
         }
-        const tripId = returnTripList().find((trip) => trip.title === title)?.id || '';
-        if (!tripId) {
-            alert("Please select a valid trip.");
-            return;
-        }
-    const newBooking: Booking = {
-        id: Math.random().toString(36),
-        userId: Math.random().toString(36),
-        tripId: returnTripList().find((trip) => trip.title === title)?.id || '',
-        guests,
-        date,
-    };
 
 
-    addBooking(newBooking);
-    window.location.href = '/bookings';
+
+    addBooking(id, guests, date, );
+
+    setBookingSubmitted(true);
 
   };
 

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { cancelBooking } from '../../utils/utils';
+import { useTrips } from '../../utils/tripContext';
 
 type TripBookingProps = {
+  id: string;
     title: string;
     guests: number;
     date: string;
@@ -9,14 +11,30 @@ type TripBookingProps = {
 
 };
 
-const TripBooking: React.FC<TripBookingProps> = ({title, guests, date, price }) => {
-  const [isVisible, setIsVisible] = useState(true);
-  const handleClick = () => {
-    setIsVisible(false);
-  };
-  if (!isVisible) {
-    return null; // Or render something else when the booking is not visible
-  }
+const TripBooking: React.FC<TripBookingProps> = ({id, title, guests, date, price }) => {
+
+  const [bookingCancelled, setBookingCancelled] = useState(false);
+  const { fetchBookings } = useTrips();
+
+  useEffect(() => {
+    if (bookingCancelled) {
+        fetchBookings();
+        setBookingCancelled(false);
+    }
+}, [bookingCancelled, fetchBookings]);
+
+
+const handleClick = () => {
+  cancelBooking(id)
+    .then(() => {
+      setBookingCancelled(true); // Set bookingCancelled to true to refetch bookings
+      console.log('Booking cancelled successfully');
+    })
+    .catch((error) => {
+      console.error('Failed to cancel booking:', error);
+    });
+};
+
   return (
     <li data-test-id='booking' className='booking'>
         <h3 data-test-id='booking-title' className='booking__title'>{title}</h3>
