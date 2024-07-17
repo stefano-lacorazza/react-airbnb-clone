@@ -26,9 +26,11 @@ export const Modal: React.FC<ModalProps> = ({id, title, duration, level, price, 
     useEffect(() => {
         if (bookingSubmitted) {
             fetchBookings();
-            navigate('/bookings');
-            // Reset the submission state if needed
-            setBookingSubmitted(false);
+            
+            setTimeout(() => {
+                navigate('/bookings');
+                setBookingSubmitted(false);
+            }, 500);
         }
     }, [bookingSubmitted, fetchBookings, navigate]);
     

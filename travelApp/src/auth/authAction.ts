@@ -1,6 +1,8 @@
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT, SIGNUP_REQUEST,  SIGNUP_FAILURE  } from '../types/actionTypes';
 import { User } from '../types/user';
 import { Dispatch } from 'redux';
+import { toast } from 'react-toastify';
+
 const loginRequest = () => ({
   type: LOGIN_REQUEST,
 });
@@ -62,9 +64,9 @@ const loginUser = (credentials:Credentials) => (dispatch: Dispatch) => {
       const res = response.json();
       
       return res; 
-    } else {
-      return response.status;
-    }
+} else {
+  toast.error(`Failed with status ${response.status}`);
+}
   })
   .then(data => {
     if (data) {
