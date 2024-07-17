@@ -44,6 +44,7 @@ const returnBookingsList = async (): Promise<Booking[]> => {
   return bookings;
 };
 
+
 const addBooking = async (tripId:string, guests:number, date:string) => {
 
   const bookingDetails = {
@@ -77,6 +78,27 @@ const addBooking = async (tripId:string, guests:number, date:string) => {
   }
 }
 
+const cancelBooking = async (bookingId: string) => {
+  const state = store.getState();
+  const token = state.auth.token;
+  console.log('Cancelling booking with ID:', bookingId);
+  try {
+    const response = await fetch(`https://travel-app-api.up.railway.app/api/v1/bookings/${bookingId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+    });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-export { returnTripList, returnBookingsList, addBooking}
+    console.log('Booking cancelled successfully');
+  } catch (error) {
+    console.error('Error cancelling booking:', error);
+  }
+}
+
+export { returnTripList, returnBookingsList, addBooking, cancelBooking}

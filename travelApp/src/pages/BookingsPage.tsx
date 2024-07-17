@@ -21,6 +21,7 @@ const BookingsPage: React.FC = () => {
       return (
         <TripBooking
           key={booking.tripId} 
+          id={booking.id}
           title={trip.title}
           guests={booking.guests}
           date={booking.date.substring(0, 10)}
