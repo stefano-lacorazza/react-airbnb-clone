@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type TripProps = {
     title: string;
@@ -11,6 +12,11 @@ type TripProps = {
 
 
 const Trip: React.FC<TripProps> = ({title, image, price, duration, level, id}) => {
+    const navigate = useNavigate();
+
+    const handleNavigate = () => {
+      navigate(`/trip/${id}`);
+    };
   return (
     <li className='trip-card' data-test-id ='trip-card'>
         <img data-test-id='trip-card-image'src={image} alt='trip photo'/>
@@ -31,7 +37,7 @@ const Trip: React.FC<TripProps> = ({title, image, price, duration, level, id}) =
                 <strong data-test-id='trip-card-price-value' className='trip-price__value'>{price}</strong>
             </div>
         </div>
-        <a data-test-id='trip-card-link' className='button' href={`/trip/${id}`}>
+        <a data-test-id='trip-card-link' className='button' onClick={handleNavigate}>
             Discover a trip
         </a>
     </li>

@@ -10,6 +10,7 @@ import { useTrips } from '../utils/tripContext';
 // Import other components and assets here
 
 const MainPage: React.FC = () => {
+  
   const { trips } = useTrips();
   const [filteredTrips, setFilteredTrips] = useState<classTrip[]>(trips);
   console.log('Trips:', trips);
