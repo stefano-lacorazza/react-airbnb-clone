@@ -7,7 +7,7 @@ import SignInPage from './pages/SIgnInPage';
 import BookingsPage from './pages/BookingsPage';
 import TripPage from './pages/TripPage';
 import ProtectedRoute from './components/auth/ProtectedRoute.tsx';
-// Import other pages/components here
+import { TripProvider } from './utils/tripContext.tsx'
 
 const App: React.FC = () => {
 
@@ -21,9 +21,11 @@ const App: React.FC = () => {
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<MainPage />} /> 
-          <Route path="/bookings" element={<BookingsPage />} />
-          <Route path="/trip/:tripId" element={<TripPage/>} />
+        
+          <Route path="/" element={<TripProvider><MainPage /></TripProvider>} /> 
+          <Route path="/bookings" element={<TripProvider><BookingsPage /></TripProvider>} />
+          <Route path="/trip/:tripId" element={<TripProvider><TripPage/></TripProvider>} />
+        
         </Route>
       </Routes>
     </BrowserRouter>

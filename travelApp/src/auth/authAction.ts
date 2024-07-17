@@ -43,7 +43,7 @@ export interface SignupAction {
 
 const loginUser = (credentials:Credentials) => (dispatch: Dispatch) => {
   dispatch(loginRequest());
-  console.log(credentials);
+  
   fetch('https://travel-app-api.up.railway.app/api/v1/auth/sign-in', {
     method: 'POST',
     headers: {
@@ -60,7 +60,7 @@ const loginUser = (credentials:Credentials) => (dispatch: Dispatch) => {
  
     if (response.ok) {
       const res = response.json();
-      console.log(res);
+      
       return res; 
     } else {
       return response.status;
@@ -101,7 +101,7 @@ const signupUser =  (credentials:Credentials) => (dispatch: Dispatch) => {
  
     if (response.ok) {
       const res = response.json();
-      console.log(res);
+      
       return res; 
     } else {
       return response.status;

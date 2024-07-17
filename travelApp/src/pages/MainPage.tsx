@@ -5,15 +5,19 @@ import SearchBar from '../components/features/SearchBar';
 import { Trip as classTrip } from '../types/trip';
 import { returnTripList } from '../utils/utils';
 import { TripLayout } from '../components/layout/TripLayout';
+import { TripProvider } from '../utils/tripContext';
+import { useTrips } from '../utils/tripContext';
 // Import other components and assets here
 
 const MainPage: React.FC = () => {
-  const [filteredTrips, setFilteredTrips] = useState<classTrip[]>(returnTripList());
-
+  const { trips } = useTrips();
+  const [filteredTrips, setFilteredTrips] = useState<classTrip[]>(trips);
+  console.log('Trips:', trips);
   return (
+    
     <div>
       <Header logged={true}></Header>
-      <SearchBar trips={returnTripList()} setFilteredTrips={setFilteredTrips}></SearchBar>
+      <SearchBar trips={trips} setFilteredTrips={setFilteredTrips}></SearchBar>
       <section className='trips'>
         <h2 className='visually-hidden'>Trips List</h2>
         <ul className='trip-list'>
@@ -22,6 +26,7 @@ const MainPage: React.FC = () => {
       </section>
       <Footer centerText='By Stefano Lacorazza'></Footer>
     </div>
+    
   );
 };
 

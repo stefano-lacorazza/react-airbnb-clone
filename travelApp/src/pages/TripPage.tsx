@@ -11,7 +11,8 @@ import { useParams } from 'react-router-dom';
 
 const TripPage: React.FC = () => {
   const { tripId } = useParams();
-  const trip:  Trip | undefined = returnTripList().find((trip) => trip.id === tripId);
+  let trips:Trip[] = []
+  const trip:  Trip | undefined = trips.find((trip) => trip.id === tripId);
   if (!trip) {
 
     return (

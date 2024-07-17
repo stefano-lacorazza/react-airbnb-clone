@@ -9,8 +9,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ redirectPath = '/sign-in' }) => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn); 
-  const state = useSelector((state: RootState) => state.auth);
-  console.log('logged:',state);
+
 
   if (isLoggedIn) {
     return <Outlet />;
